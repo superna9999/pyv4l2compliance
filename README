@@ -1,0 +1,11 @@
+# Howto prepare 'sizes' file
+
+ffprobe -show_packets test-25fps.h264 | grep "size=" > test-25fps.h264.sizes
+
+# Use the python script to prepare the .hdr file for v4l2-compliance
+
+python pyhdr.py test-25fps.h264
+
+# And run the v4l2-complience test
+
+v4l2-compliance --stream-from-hdr test-25fps.h264.hdr -s250 -d /dev/video1
