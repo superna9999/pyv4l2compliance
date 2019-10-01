@@ -7,7 +7,7 @@ stream_name_sizes = "test-25fps.h264.sizes"
 output_filename = "test-25fps.h264.hdr"
 
 if __name__ == "__main__":
-	verbose = True
+	verbose = False
 
 	if len(sys.argv) < 2:
 		exit("Need at least one argument")
@@ -15,13 +15,6 @@ if __name__ == "__main__":
 	stream_name = sys.argv[1]
 	stream_name_sizes = stream_name + '.sizes'
 	output_filename = stream_name + '.hdr'
-
-	if len(sys.argv) > 2:
-		print "%s" % sys.argv[2]
-		
-		if str(sys.argv[1]) == '-v':
-			print "verbose"
-			verbose = True
 	
 	try:
 		streamfile = open(stream_name, "r")
