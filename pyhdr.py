@@ -1,5 +1,5 @@
+#!/usr/bin/env python3
 import sys
-from scanf import scanf
 from struct import pack
 
 stream_name = "test-25fps.h264"
@@ -17,7 +17,7 @@ if __name__ == "__main__":
 	output_filename = stream_name + '.hdr'
 	
 	try:
-		streamfile = open(stream_name, "r")
+		streamfile = open(stream_name, "rb")
 	except IOError:
 		exit("Can't open %s" % stream_name)
 	
@@ -36,23 +36,22 @@ if __name__ == "__main__":
 	sizes_list = []
 
 	subs = 'size='
-	sizes = list(filter(lambda x: subs in x, data))
+	sizes = list([x for x in data if subs in x])
 
 	for s in sizes:
-		__null__, sz = scanf('%s=%u', str(s))
-		sizes_list.append(sz)
+		sz = s.split("=")[1].split("\n")
+		sizes_list.append(int(sz[0]))
 
 	for i in range(0, len(sizes_list)):
-#		output_file.write(pack("!4s", b"Vhdr"))
 		output_file.write(pack("!4s", b"rdhV"))
 		
-		packet = streamfile.read(sizes_list[i])
+		packet = streamfile.read(int(sizes_list[i]))
 		
 		output_file.write(pack("!I", sizes_list[i]))
 		output_file.write(packet)
 
 		if verbose:
-			print len(packet)
+			print(len(packet))
 
 	streamfile_sizes.close()
 	streamfile.close()
