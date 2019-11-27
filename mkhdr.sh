@@ -41,6 +41,6 @@ ffprobe -show_packets $TMP/raw | grep "size=" > $TMP/raw.sizes
 
 cp $TMP/raw.hdr $3
 
-rm -fr $TMP
+#rm -fr $TMP
 
 exit 0
