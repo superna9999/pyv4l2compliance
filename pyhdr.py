@@ -17,6 +17,11 @@ if __name__ == "__main__":
 	else:
 		offset = 0
 
+	if len(sys.argv) > 3:
+		hdrskip = int(sys.argv[3])
+	else:
+		hdrskip = 0
+
 	stream_name = sys.argv[1]
 	stream_name_sizes = stream_name + '.sizes'
 	output_filename = stream_name + '.hdr'
@@ -52,6 +57,8 @@ if __name__ == "__main__":
 	for i in range(0, len(sizes_list)):
 		output_file.write(pack("!4s", b"rdhV"))
 		
+		if hdrskip > 0:
+			streamfile.seek(hdrskip, 1)
 		packet = streamfile.read(int(sizes_list[i]))
 		
 		output_file.write(pack("!I", sizes_list[i]))

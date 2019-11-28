@@ -8,7 +8,8 @@ if [ $# -lt 3 ]; then
 fi
 
 TMP=`mktemp -d -p $PWD`
-OFF=0
+OFF=""
+SKIP=""
 
 case $2 in
 	raw)
@@ -26,14 +27,11 @@ case $2 in
 		ffmpeg -i $1 -c:v copy $TMP/raw.m2v
 		mv $TMP/raw.m2v $TMP/raw
 		;;
-	vp8)
+	vp[89])
 		ffmpeg -i $1 -c:v copy $TMP/raw.ivf
 		mv $TMP/raw.ivf $TMP/raw
-		;;
-	vp9)
-		ffmpeg -i $1 -c:v copy $TMP/raw.ivf
-		mv $TMP/raw.ivf $TMP/raw
-		OFF=44
+		OFF=32
+		SKIP=12
 		;;
 	*)
 		rm -fr $TMP
@@ -43,7 +41,7 @@ esac
 
 ffprobe -show_packets $TMP/raw | grep "size=" > $TMP/raw.sizes
 
-./pyhdr.py $TMP/raw $OFF
+./pyhdr.py $TMP/raw $OFF $SKIP
 
 cp $TMP/raw.hdr $3
 
