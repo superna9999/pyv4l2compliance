@@ -11,6 +11,11 @@ if __name__ == "__main__":
 
 	if len(sys.argv) < 2:
 		exit("Need at least one argument")
+	
+	if len(sys.argv) > 2:
+		offset = int(sys.argv[2])
+	else:
+		offset = 0
 
 	stream_name = sys.argv[1]
 	stream_name_sizes = stream_name + '.sizes'
@@ -30,6 +35,8 @@ if __name__ == "__main__":
 		output_file = open(output_filename, "wb")
 	except IOError:
 		exit("Can't open %s" % output_filename)
+
+	streamfile.seek(offset)
 
 	data = streamfile_sizes.readlines()
 
